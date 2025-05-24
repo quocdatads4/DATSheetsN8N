@@ -10,6 +10,9 @@ function doPost(e) {
     // Parse JSON từ body
     const requestBody = JSON.parse(e.postData.contents);
     const { action, data, token: receivedToken } = requestBody;
+    
+    // Import hàm từ file riêng
+    const { facebookInsertSheet } = require('./facebookInsertSheet');
 
     // Validate token
     if (receivedToken !== SECRET_TOKEN) {
@@ -56,14 +59,6 @@ function doPost(e) {
   }
 }
 
-function facebookInsertSheet(data) {
-  const spreadsheet = SpreadsheetApp.openById(data.sheetsid);
-  const newSheet = spreadsheet.insertSheet(`Facebook_${data.idfanpage}`);
-  return {
-    sheetName: newSheet.getName(),
-    sheetUrl: spreadsheet.getUrl() + "#gid=" + newSheet.getSheetId()
-  };
-}
 
 function websiteInsertSheets(data) {
   const spreadsheet = SpreadsheetApp.openById(data.sheetsid);
